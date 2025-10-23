@@ -1,70 +1,87 @@
-import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
+/*
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { AbilityConstant, UIAbility, Configuration, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { BusinessError } from '@kit.BasicServicesKit';
+import { webview } from '@kit.ArkWeb';
 
-const DOMAIN = 0x0000;
+export const webController = new webview.WebviewController();
 
 export default class EntryAbility extends UIAbility {
-  restoreWebUrl(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    if (launchParam.launchReason !== AbilityConstant.LaunchReason.CONTINUATION) {
-      return;
-    }
-    if (want.parameters !== undefined) {
-      const targetUrl = want.parameters.url;
-      hilog.info(DOMAIN, 'sTag', '%{public}s', 'Got targetUrl onCreate: ' + targetUrl)
-      AppStorage.setOrCreate('targetUrl', targetUrl);
-    }
-    this.context.restoreWindowStage(new LocalStorage())
-  }
-
-  // storage : LocalStorage = new LocalStorage();
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
-    this.restoreWebUrl(want, launchParam);
-  }
-
-  onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onNewWant')
-    this.restoreWebUrl(want, launchParam);
+    AppStorage.setOrCreate('systemLanguage', this.context.config.language);
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
 
   onDestroy(): void {
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     // Main window is created, set main page for this ability
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    windowStage.getMainWindow().then((windowObj) => {
+      windowObj.setWindowSystemBarProperties({
+        statusBarContentColor: '#000000'
+      });
+    }).catch((error: BusinessError<void>) => {
+      hilog.error(0x0000, 'testTag', 'Execution failed, code = %{public}d, message = %{public}s',
+        error.code, error.message);
+    });
     windowStage.loadContent('pages/Index', (err) => {
       if (err.code) {
-        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
+        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;
       }
-      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
+      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
     });
   }
 
   onWindowStageDestroy(): void {
     // Main window is destroyed, release UI related resources
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');
   }
 
   onForeground(): void {
     // Ability has brought to foreground
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');
   }
 
   onBackground(): void {
     // Ability has back to background
-    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
   }
 
-  onContinue(wantParam: Record<string, Object>): AbilityConstant.OnContinueResult | Promise<AbilityConstant.OnContinueResult> {
-    this.context.eventHub.emit('get-current-url', (url: string) => {
-      wantParam['url'] = url;
-    });
-    hilog.info(DOMAIN, 'sTag', '%{public}s', 'Save source targetUrl: ' + wantParam['url']);
-    return AbilityConstant.OnContinueResult.AGREE;
+  onConfigurationUpdate(newConfig: Configuration): void {
+    if (AppStorage.get('systemLanguage') !== newConfig.language) {
+      AppStorage.setOrCreate('systemLanguage', newConfig.language);
+    }
+    if (!newConfig.language) {
+      return;
+    }
+    try {
+      if (/zh/.test(newConfig.language)) {
+        webController.loadUrl($rawfile('index.html'));
+      } else {
+        webController.loadUrl($rawfile('index.html'));
+      }
+    } catch (error) {
+      hilog.error(0x0000, 'testTag', 'Execution failed, code = %{public}d, message = %{public}s',
+        error.code, error.message);
+    }
   }
 }

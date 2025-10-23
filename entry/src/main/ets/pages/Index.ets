@@ -1,38 +1,37 @@
-import webview from '@ohos.web.webview';
-import { hilog } from '@kit.PerformanceAnalysisKit';
+/*
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { webController } from '../entryability/EntryAbility';
 
 @Entry
 @Component
-struct IndexPage {
-  @StorageLink('targetUrl') targetUrl: string = 'https://www.baidu.com/';// 替换为你的目标网址
-  controller: webview.WebviewController = new webview.WebviewController();
+struct Index {
+  @StorageProp('systemLanguage') language: string = '';
 
   build() {
     Column() {
       Web({
-        src: this.targetUrl,
-        controller: this.controller
+        src: $rawfile('index.html'),
+        controller: webController
       })
-        .width('100%')
-        .height('100%')
-        .domStorageAccess(true)
+        .expandSafeArea([SafeAreaType.SYSTEM])
+        .zoomAccess(false)
     }
     .width('100%')
     .height('100%')
+    .backgroundColor('#F1F3F5')
+    .expandSafeArea([SafeAreaType.SYSTEM])
   }
-
-  aboutToAppear(): void {
-    getContext(this).eventHub.on('get-current-url', (callback: (url: string) => void) => {
-      hilog.info(1, 'sTag', '%{public}s', 'Got source targetUrl: ' + this.controller.getUrl());
-      callback(this.controller.getUrl());
-    })
-
-    hilog.info(1, 'sTag', '%{public}s', 'aboutToAppear targetUrl: ' + this.targetUrl);
-  }
-
-  onBackPress(): boolean | void {
-    this.controller.backward();
-    return true;
-  }
-
 }

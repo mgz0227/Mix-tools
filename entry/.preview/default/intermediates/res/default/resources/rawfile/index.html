@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>音律屋-混音助手</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="shortcut icon" href="http://yinlvwu.com/hyzs/logo.png">
+  <link rel="apple-touch-icon-precomposed" href="http://yinlvwu.com/hyzs/logo.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://yinlvwu.com/hyzs/logo.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://yinlvwu.com/hyzs/logo.png">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://yinlvwu.com/hyzs/logo.png">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="http://yinlvwu.com/hyzs/logo.png">
+  
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 content">
+        <div class="tn-input d-flex-center">
+          <div class="form-group">
+            <input type="text" placeholder="请输入你的歌曲速度值" class="form-control" id="js-value">
+          </div>
+          <div class="input-text">BPM</div>
+          <button class="btn btn-info btn-reset">重置</button>
+          <button class="btn btn-primary btn-calc" id="js-calc">计算</button>
+        </div>
+
+        <div class="tn-content">
+          <div class="card" id="compress">
+            <div class="card-title d-flex">
+              <div class="card-title-icon">
+                <img src="./images/box.svg" width="14" height="12" alt="">
+              </div>
+              <div class="card-title-cn">压缩</div>
+              <div class="card-title-en">Compress</div>
+              <div class="card-title-desc">
+                注：>800, <50的释放时间需谨慎选择 （单位：ms） </div>
+              </div>
+              <div class="mobile-desc">注：>800, <50的释放时间需谨慎选择 （单位：ms）</div>
+                  <div class="card-content d-flex-center">
+                    <div style="width: 40px;" class="card-content-title">释放时间</div>
+                    <div class="lines">
+                      <div class="line"></div>
+                      <div class="line"></div>
+                      <div class="line"></div>
+                      <div class="line"></div>
+                      <div class="line"></div>
+                      <div class="line"></div>
+                    </div>
+                    <div class="btn-values" id="js-compress-values">
+                      <div class="btn-value">20</div>
+                      <div class="btn-value">20</div>
+                      <div class="btn-value">20</div>
+                      <div class="btn-value">20</div>
+                      <div class="btn-value">20</div>
+                      <div class="btn-value">20</div>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="card verb" id="verb">
+                <div class="card-title d-flex">
+                  <div class="card-title-icon">
+                    <img src="./images/music.svg" width="14" height="12" alt="">
+                  </div>
+                  <div class="card-title-cn">混响</div>
+                  <div class="card-title-en">Rverb</div>
+                </div>
+                <div class="card-content">
+                  <h6 class="card-content-title">建议预延迟时间（单位：ms）</h6>
+                  <div class="d-flex-center verb-item">
+                    <div>房间</div>
+                    <div class="lines">
+                      <div class="line"></div>
+                    </div>
+                    <div class="btn-value" id="js-delay-room">20</div>
+                  </div>
+                  <div class="d-flex-center verb-item">
+                    <div>大堂</div>
+                    <div class="lines">
+                      <div class="line"></div>
+                    </div>
+                    <div class="btn-value" id="js-delay-big">20</div>
+                  </div>
+                  <div class="d-flex-center verb-item">
+                    <div>板式</div>
+                    <div class="lines">
+                      <div class="line"></div>
+                    </div>
+                    <div class="btn-value" id="js-delay-board">20</div>
+                  </div>
+                  <h6 class="card-content-title">建议混响时间（单位：ms）</h6>
+                  <div class="d-flex-center verb-item">
+                    <div>房间</div>
+                    <div class="lines">
+                      <div class="line"></div>
+                    </div>
+                    <div class="btn-value" id="js-verb-room">20</div>
+                  </div>
+                  <div class="d-flex-center verb-item">
+                    <div>大堂</div>
+                    <div class="lines">
+                      <div class="line"></div>
+                    </div>
+                    <div class="btn-value" id="js-verb-big">20</div>
+                  </div>
+                  <div class="d-flex-center verb-item">
+                    <div style="margin-right: 50px;">板式</div>
+                    建议取前面数值的任意倍数
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="margin-bottom: 100px;" id="delay">
+                <div class="card-title d-flex">
+                  <div class="card-title-icon">
+                    <img src="./images/time.svg" width="14" height="12" alt="">
+                  </div>
+                  <div class="card-title-cn">延迟</div>
+                  <div class="card-title-en">Delay</div>
+                  <div class="card-title-desc">
+                    延时时间（单位：ms）
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="d-flex">
+                    <div class="delay-left">
+                      <h6 class="card-content-title">延时节拍</h6>
+                      <div class="btn-values">
+                        <div class="btn-value">1/2</div>
+                        <div class="btn-value">1/4</div>
+                        <div class="btn-value">1/8</div>
+                        <div class="btn-value">1/16</div>
+                        <div class="btn-value">1/32</div>
+                        <div class="btn-value">1/64</div>
+                      </div>
+                    </div>
+                    <div class="delay-right">
+                      <h6 class="card-content-title">延时时间<br> (单位:ms)</h6>
+                      <div class="btn-values" id="js-delay-values">
+                        <div class="btn-value">100</div>
+                        <div class="btn-value">200</div>
+                        <div class="btn-value">400</div>
+                        <div class="btn-value">600</div>
+                        <div class="btn-value">450</div>
+                        <div class="btn-value">800</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <footer class="footer">
+                <div class="row">
+                  <div class="col-md-6 footer-left">
+                    <a href="" target="_blank">
+                      <img src="./images/docs.svg" width="14" height="12" alt=""> &nbsp;&nbsp;
+                      帮助文档
+                    </a>
+                  </div>
+                  <div class="col-md-6 footer-right text-right">
+                    <a href="http://yinlvwu.com/" style="color: #c5c5c5;"
+                      target="_blank"><span></span>音律屋官网：yinlvwu.com</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>微信公众号：音律屋</span>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="tn-sidebar" id="js-tn-sidebar">
+              <div class="tn-nav">
+                <div class="tn-nav-title">
+                  音律屋混音助手
+                </div>
+                <a class="tn-nav-item active" id="js-to-top">
+                  <img src="./images/box.svg" width="14" height="12" class="img-normal" alt="">
+                  <img src="./images/box-white.svg" width="14" height="12" class="img-white" alt="">
+                  压缩<span>Compress</span>
+                </a>
+                <a class="tn-nav-item" href="#verb" data-scroll>
+                  <img src="./images/music.svg" width="14" class="img-normal" height="12" alt="">
+                  <img src="./images/music_2.svg" width="14" height="12" class="img-white" alt="">
+                  混响<span>Rverb</span>
+                </a>
+                <a class="tn-nav-item" href="#delay" data-scroll>
+                  <img src="./images/time.svg" width="14" class="img-normal" height="12" alt="">
+                  <img src="./images/time_2.svg" width="14" height="12" class="img-white" alt="">
+                  延迟<span>Delay</span>
+                </a>
+                <a class="tn-nav-item" href="/" target="_blank">
+                  <img src="./images/home.svg" width="14" class="img-normal" height="12" alt="">
+                  <img src="./images/home_2.svg" width="14" class="img-white" height="12" alt="">
+                  主页<span>Home</span>
+                </a>
+                <a class="tn-image d-block" href="/" target="_blank">
+                  <img src="./images/banner.svg" class="banner" alt="yinlv">
+                  <img src="./images/banner_mobile.svg" class="mobile-banner" alt="yinlv">
+                </a>
+              </div>
+              <div class="share">
+                <div class="bshare-custom icon-medium">
+                  <div class="row">
+                    <div class="col" style="padding-right: 7px;">
+                      <div class="share-item">
+                        <a title="分享到QQ好友" class="bshare-qqim"></a>
+                      </div>
+                    </div>
+                    <div class="col" style="padding-left: 7px;">
+                      <div class="share-item">
+                        <a title="分享到微信" class="bshare-weixin"></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script type="text/javascript" charset="utf-8"
+                  src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=1&amp;lang=zh"></script>
+                <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-header">
+        音律屋混音助手
+        <div class="btn-nav" id="js-btn-nav">
+          <img src="./images/menu.svg" width="22" height="22" alt="" class="btn-nav-close">
+          <img src="./images/exit.svg" width="22" height="22" alt="" class="btn-nav-open">
+        </div>
+      </div>
+      <div class="mobile-input">
+        <div class="tn-input d-flex-center">
+          <div class="form-group">
+            <input type="text" class="form-control" id="js-mobile-value">
+          </div>
+          <div class="input-text">BPM</div>
+          <button class="btn btn-info btn-reset">重置</button>
+          <button class="btn btn-primary btn-calc" id="js-mobile-calc">计算</button>
+        </div>
+      </div>
+</body>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script src="./js/app.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@16.1.0/dist/smooth-scroll.polyfills.min.js"></script>
+<script>
+  var scroll = new SmoothScroll('a[href*="#"]', {
+    speed: 500,
+    speedAsDuration: true,
+    offset: 80,
+  });
+  $('#js-to-top').click(function () {
+    $("html, body").animate({ scrollTop: 0 }, 500);
+  });
+</script>
+
+</html>

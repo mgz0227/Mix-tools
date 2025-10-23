@@ -6,13 +6,7 @@
     "mainElement": "EntryAbility",
     "deviceTypes": [
       "phone",
-      "tablet",
-      "2in1"
-    ],
-    "requestPermissions": [
-      {
-        "name": "ohos.permission.INTERNET"
-      },
+      "tablet"
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
@@ -27,7 +21,6 @@
         "startWindowIcon": "$media:startIcon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
-        "continuable": true,
         "skills": [
           {
             "entities": [

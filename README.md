@@ -1,12 +1,45 @@
-# ohos-WebApp
-将网页以应用的形式，封装成鸿蒙hap
+# 基于Web响应式能力实现一多布局
 
-支持应用接续，将当前页面流转到其他设备
 
-## 使用教程
-1. 克隆本仓库，使用DevEco打开
-2. 将 `entry/src/main/ets/pages/Index.ets` 第7行的 `https://www.baidu.com/` 更改为你要封装的网址
-3. 将 `entry/src/main/resources/base/element/string.json` 第13行的 `WebApp` 更改为你的应用名称
-4. 如需更改应用图标，请百度或参考华为开发者文档，~~绝对不是我懒得写了~~
-5. 打开左上角 `File - Project Structure (或按下Ctrl+Alt+Shift+S)`，进入Project - Signing Configs，登录你的华为开发者账号，自动创建签名，点OK保存
-6. 点击左上角 `Build - Build Hap(s)/APP(s) - Build Hap(s)` 来编译hap安装包，输出目录在 `entry/build/default/outputs/default` 
+### 简介
+本示例基于Web侧提供的一多能力，如相对单位、媒体查询、添加窗口事件等，实现了常见的Web的一多效果，包括：字体大小调整、图片大小调整、宫格布局、轮播布局、自定义弹窗。通过集成Web一多的相关能力，可以让应用在多设备上都有良好的用户体验。
+
+### 效果预览
+
+| 断点   | sm                                   | md                                      | lg                                    |
+| ------ | ------------------------------------ | --------------------------------------- | ------------------------------------- |
+| 效果图 | ![](./screenshots/devices/phone.png) | ![](./screenshots/devices/foldable.png) | ![](./screenshots/devices/tablet.png) |
+
+
+### 工程目录
+
+```
+├──WebProject                           // Web程序位置
+├──entry/src/main/ets/
+│  ├──entryability
+│  │  └──EntryAbility.ets               // 程序入口类
+│  ├──entrybackupability  
+│  │  └──EntryBackupAbility.ets  
+│  └──pages              
+│     └──Index.ets                      // 程序页面入口
+└──entry/src/main/resources             // 应用静态资源目录
+```
+
+### 具体实现
+1. 字体大小与图片大小都依靠媒体查询，通过媒体查询来动态设置元素的相关属性，实现一多效果。
+2. 轮播图一多主要依靠动态调整每个轮播项的尺寸以及单次轮播距离实现不同尺寸下不同的轮播效果。
+3. 宫格部分主要依靠媒体查询在不同屏幕断点尺寸下，设置不同的列数与间距，从而实现一多效果。
+4. 自定义弹窗主要依靠媒体查询，在不同断点下设置不同的弹窗尺寸。
+
+### 相关权限
+
+不涉及
+
+### 约束与限制
+1. 本示例仅支持标准系统上运行，支持设备：华为手机。
+
+2. HarmonyOS系统：HarmonyOS 5.0.5 Release及以上。
+
+3. DevEco Studio版本：DevEco Studio 5.0.5 Release及以上。
+
+4. HarmonyOS SDK版本：HarmonyOS 5.0.5 Release SDK及以上。
